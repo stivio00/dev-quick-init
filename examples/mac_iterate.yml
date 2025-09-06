@@ -1,0 +1,15 @@
+driver: brew  # macOS uses Homebrew
+
+params:
+  test:
+    - test1
+    - hello word
+    - test 2
+    - :)
+
+after:
+  test-iterate:
+    - echo {{test}}
+  wait-some-time:
+    - sleep 1
+    - sleep 2

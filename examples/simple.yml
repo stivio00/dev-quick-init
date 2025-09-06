@@ -1,0 +1,29 @@
+driver: winget  # options: winget, brew, apt, pacman
+
+params:
+  name: Joe Doe
+  email: joe@email.com
+  ssh_key_path: C:\Users\%USERNAME%\.ssh\id_rsa
+
+install:
+  - Git.Git
+  - Amazon.AWSCLI
+  - Microsoft.VisualStudioCode
+  - Helm.Helm
+  - Kubernetes.kubectl
+  - derailed.k9s
+
+after:
+  git-set-up:
+    - git config --global user.name "{{name}}"
+    - git config --global user.email "{{email}}"
+    - git lfs install
+  check-versions:
+    - helm version
+    - kubectl version --client
+    - k9s version
+
+files:
+  "%userprofile%/.aws/config.ini": |
+    [profile example]
+    test=123

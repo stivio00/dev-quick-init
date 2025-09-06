@@ -1,0 +1,10 @@
+driver: brew  # macOS uses Homebrew
+
+install:
+  - kubectl
+  - helm
+
+after:
+  check-versions:
+    - kubectl version --client
+    - helm version

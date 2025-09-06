@@ -1,0 +1,110 @@
+# Full example for a Windows box
+
+driver: winget  # options: winget, brew, apt, pacman
+
+# Parameters can be single strings like Key: Value
+# or list like Key: [val1, val2, .. ]
+
+params:
+  name: Joe Doe
+  email: joe@email.com
+  ssh_key_path: C:\Users\%USERNAME%\.ssh\id_rsa
+  python_default: 3.12
+  repos: # special var list, when use will repeat the after command which each var
+    - git@github.com:user/repo1.git
+    - git@github.com:user/repo2.git
+  repos_dir: C:\Projects
+  dotnet_sdk: # special var list, when use will repeat the installation which each var
+    - 8
+    - 10
+
+install:
+  # Basic
+  - Google.Chrome
+  - Postman.Postman
+
+  # Version control & Git tools
+  - Git.Git
+  - Git.GitLFS
+
+  # Dev tooling & utilities
+  - Microsoft.WSL
+  - Docker.DockerDesktop
+  - 7zip.7zip
+  - Microsoft.WindowsTerminal
+  - astral-sh.uv  # UV installer
+
+  # Programming languages
+  - Microsoft.DotNet.SDK.{{dotnet_sdk}} # automatically iterate over vars
+  - NodeJS.NodeJS  # optional
+  - Rust.Rust  # optional
+
+  # Cloud & remote tools
+  - Amazon.AWSCLI
+ # - HashiCorp.Terraform  # optional
+ # - HashiCorp.Packer     # optional
+
+  # IDEs
+  - Microsoft.VisualStudio.2022.Community
+  - Microsoft.VisualStudioCode
+  - JetBrains.Rider
+  - JetBrains.PyCharm
+  - dbeaver.dbeaver
+
+  # Kubernetes / container dev
+  - Helm.Helm
+  - Kubernetes.kubectl
+  - derailed.k9s
+  - Headlamp.Headlamp
+
+after:
+  git:
+    - git config --global user.name "{{name}}"
+    - git config --global user.email "{{email}}"
+    - git lfs install
+    - ssh-keygen -t rsa -b 4096 -C "{{email}}" -f "{{ssh_key_path}}" -N ""
+
+  python:
+    - uv python install 3.10
+    - uv python install 3.11
+    - uv python install 3.12
+    - uv python install 3.13
+    - uv python use {{python_default}}
+    - uv python list
+
+  dotnet:
+    - dotnet --list-sdks
+    - dotnet workload install --all --sdk {{dotnet_sdk}}.0
+
+#  aws:
+#    - aws configure sso
+
+  docker-images:
+    # pre pull images
+    - docker pull postgres
+
+  check-versions:
+    - docker --version
+    - helm version
+    - kubectl version --client
+    - k9s version
+    - headlamp --version
+    - terraform --version
+    - packer --version
+
+  clone-fundamental-repos:
+    - cmd: git clone {{repos}}
+      dir: "{{repos_dir}}"
+
+files:
+  "%userprofile%/.some_example_setting.ini": |
+    [section]
+    test=123
+
+  "~/.config/my_app_config.ini": |
+    [settings]
+    enabled=true
+    name={{name}}
+    email={{email}}
+
+

@@ -1,0 +1,85 @@
+driver: apt  # Debian/Ubuntu package manager
+
+params:
+  name: Joe Doe
+  email: joe@email.com
+  ssh_key_path: ~/.ssh/id_rsa
+  python_default: 3.12
+  repos:
+    - git@github.com:user/repo1.git
+    - git@github.com:user/repo2.git
+  repos_dir: ~/Projects
+  dotnet_sdk:
+    - 8
+    - 10
+
+before:
+  - sudo apt update
+  - sudo apt upgrade -y
+  - mkdir -p "{{repos_dir}}"
+
+install:
+  # Basic utilities
+  - git
+  - git-lfs
+  - curl
+  - wget
+  - vim
+  - build-essential
+  - unzip
+  - 7zip
+  - docker.io
+  - docker-compose
+  - nodejs
+  - npm
+  - rustc
+  - cargo
+
+  # Programming languages
+  - dotnet-sdk-{{dotnet_sdk}}
+
+  # Kubernetes / container dev
+  - kubectl
+  - helm
+
+after:
+  git:
+    - git config --global user.name "{{name}}"
+    - git config --global user.email "{{email}}"
+    - git lfs install
+    - ssh-keygen -t rsa -b 4096 -C "{{email}}" -f "{{ssh_key_path}}" -N ""
+
+  python:
+    - uv python install 3.10
+    - uv python install 3.11
+    - uv python install 3.12
+    - uv python install 3.13
+    - uv python use {{python_default}}
+    - uv python list
+
+  dotnet:
+    - dotnet --list-sdks
+    - dotnet workload install --all --sdk {{dotnet_sdk}}.0
+
+  docker-images:
+    - docker pull postgres
+
+  check-versions:
+    - docker --version
+    - helm version
+    - kubectl version --client
+    - git --version
+    - rustc --version
+    - node --version
+    - npm --version
+
+  clone-fundamental-repos:
+    - cmd: git clone {{repos}}
+      dir: {{repos_dir}}
+
+files:
+  "~/.config/my_app_config.ini": |
+    [settings]
+    enabled=true
+    name={{name}}
+    email={{email}}

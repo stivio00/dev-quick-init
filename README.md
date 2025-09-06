@@ -8,15 +8,19 @@ The tool supports multiple package managers and can iterate over lists of parame
 
 # Usage
  ```bash
- $ quick-setup --help                   
-Usage: quick-setup [OPTIONS] YAML_FILE
+$ uvx  dev-quick-init  --help     
+Usage: dev-quick-init [OPTIONS] [YAML_FILE]
 
   Quick developer machine setup based on YAML.
 
 Options:
-  -v, --verbose  Show detailed command output
-  -d, --dry-run  Show commands without executing
-  --help         Show this message and exit.
+  -v, --verbose         Show detailed command output
+  -d, --dry-run         Show commands without executing
+  -l, --list            Show available installer drivers
+  -g, --generate TEXT   Generate sample template (e.g., 'windows-full'). If
+                        not provided, will list all available templates.
+  -t, --list-templates  List all available templates
+  --help                Show this message and exit.
  ```
 
 # 🚀 Features
@@ -123,22 +127,22 @@ files:
 
 Install Quick Setup
 ```bash
-pip install quick-setup
+pip install dev-quick-init
 ```
 
 Run with a YAML file
 ```bash
-quick-setup path/to/setup.yml
+dev-quick-init path/to/setup.yml
 ```
 
 Run in verbose mode
 ```bash
-quick-setup path/to/setup.yml -v
+dev-quick-init path/to/setup.yml -v
 ```
 
 Run in dry run mode
 ```bash
-quick-setup path/to/setup.yml -d
+dev-quick-init path/to/setup.yml -d
 ```
 
 # 🛠 Use Cases

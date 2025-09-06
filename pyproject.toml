@@ -1,9 +1,9 @@
 [project]
-name = "quick-setup"
-version = "0.1.0"
+name = "dev-quick-init"
+version = "0.1.6"
 description = "Quick developer machine setup from YAML"
 authors = [
-    { name="Your Name", email="you@example.com" }
+    { name="Stephen Krol", email="you@example.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-quick-setup = "quick_setup.installer:main"
+dev-quick-init = "dev_quick_init.installer:main"
 
 [tool.uv]
 package = true

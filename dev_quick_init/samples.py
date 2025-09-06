@@ -213,3 +213,40 @@ after:
     - uv python install {{python_default}}
     - uv python use {{python_default}}
 """
+
+
+arch_minimal="""
+driver: pacman  # Arch Linux package manager
+
+params:
+  name: John Developer
+  email: john@example.com
+
+install:
+  # Programming languages
+  - go
+  - rustup  # installer for Rust
+
+  # Version control
+  - git
+
+  # Utilities
+  - base-devel
+  - wget
+  - curl
+  - tmux
+  - vim
+
+  # Container tools
+  - podman  # install Podman
+
+after:
+  git:
+    - git config --global user.name "{{name}}"
+    - git config --global user.email "{{email}}"
+
+  rust:
+    - rustup default stable
+    - rustc --version
+    - cargo --version
+"""

@@ -145,6 +145,17 @@ Run in dry run mode
 dev-quick-init path/to/setup.yml -d
 ```
 
+List all quick templates
+```bash
+dev-quick-init -t
+```
+
+Generate a full windows template and install it
+```bash
+dev-quick-init -g windows_full > install.yml
+dev-quick-init install.yml
+```
+
 # 🛠 Use Cases
 
 * New Developer Machine

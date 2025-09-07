@@ -9,13 +9,13 @@ import time
 from . import samples
 
 PACKAGE_DRIVERS = {
-    "winget": 'winget install --id "{pkg}" --silent --accept-source-agreements --accept-package-agreements',
-    "scoop": "scoop install {pkg}",
-    "chocolatey": "choco install {pkg} -y",
-    "brew": "brew install {pkg}",
-    "apt": "sudo apt-get install -y {pkg}",
-    "pacman": "sudo pacman -S --noconfirm {pkg}",
-    "dnf": "sudo dnf install -y {pkg}",
+    "winget": 'winget install --id "{pkg}" --silent --accept-source-agreements --accept-package-agreements {extra}',
+    "scoop": "scoop install {pkg} {extra}",
+    "chocolatey": "choco install {pkg} -y {extra}",
+    "brew": "brew install {pkg} {extra}",
+    "apt": "sudo apt-get install -y {pkg} {extra}",
+    "pacman": "sudo pacman -S --noconfirm {pkg} {extra}",
+    "dnf": "sudo dnf install -y {pkg} {extra}",
 }
 
 
@@ -38,17 +38,22 @@ def run_cmd(
         return
 
     click.echo(f"➡️ Running: {final_cmd}" + (f" in {final_cwd}" if final_cwd else ""))
-    if verbose:
-        subprocess.run(final_cmd, shell=True, check=True, cwd=final_cwd)
-    else:
-        subprocess.run(
-            final_cmd,
-            shell=True,
-            check=True,
-            cwd=final_cwd,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
+    try:
+        if verbose:
+            subprocess.run(final_cmd, shell=True, check=True, cwd=final_cwd)
+        else:
+            subprocess.run(
+                final_cmd,
+                shell=True,
+                check=True,
+                cwd=final_cwd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+    except subprocess.CalledProcessError as e:
+        click.echo(f"❌ Error: {e.cmd}")
+        if verbose:
+            click.echo(f"{e.output}")
 
 
 def expand_list_params(cmd, params):

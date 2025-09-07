@@ -1,6 +1,6 @@
 [project]
 name = "dev-quick-init"
-version = "0.1.6"
+version = "0.1.8"
 description = "Quick developer machine setup from YAML"
 authors = [
     { name="Stephen Krol", email="you@example.com" }
@@ -12,6 +12,10 @@ dependencies = [
     "pyyaml",
     "click"
 ]
+
+[project.urls]
+homepage = "https://github.com/stivio00/dev-quick-init"
+repository = "https://github.com/stivio00/dev-quick-init"
 
 [project.scripts]
 dev-quick-init = "dev_quick_init.installer:main"

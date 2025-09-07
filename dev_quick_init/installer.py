@@ -98,7 +98,7 @@ def install_software(software_list, driver, params, verbose=True, dry_run=False)
         else:
             processed_list.append(pkg)
     for pkg in processed_list:
-        run_cmd(driver_template.format(pkg=pkg), verbose=verbose, dry_run=dry_run)
+        run_cmd(driver_template.format(pkg=pkg, **params), verbose=verbose, dry_run=dry_run)
 
 
 def create_files(files_dict, params, dry_run=False):
